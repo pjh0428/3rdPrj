@@ -3,7 +3,27 @@ guid: eef8f06dad0948947b36c519244b1ee9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Yakuzombie_
+    second: {fileID: 2800000, guid: 638f7d3abd319b34c9bb0e3585752121, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Yakuzombie_diffuse
+    second: {fileID: 2800000, guid: d85cbfc6f0cdff64d97c503c9dc4c6e1, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Yakuzombie_normal
+    second: {fileID: 2800000, guid: c91f18514bc8ebf42aa9088f6f0cf9eb, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Yakuzombie_specular
+    second: {fileID: 2800000, guid: 13c09341789dea74595b56e9fa95055c, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
