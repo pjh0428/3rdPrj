@@ -24,10 +24,10 @@ public class ViewSwitcher : MonoBehaviour
             isFpsView = !isFpsView;
 
             // PlayerController에 현재 시점 모드 알려주기
-            if (_playerController != null)
-            {
-                _playerController.SetViewMode(isFpsView);
-            }
+            //if (_playerController != null)
+            //{
+            //    _playerController.SetViewMode(isFpsView);
+            //}
 
             if (isFpsView)
             {
