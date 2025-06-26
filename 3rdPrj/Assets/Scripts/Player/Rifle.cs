@@ -30,6 +30,7 @@ public class Rifle : MonoBehaviour
 
     private AimController _aimController;
     private CinemachineImpulseSource _impulseSource;
+    private Animator _animator;
 
 
     void Start()
@@ -38,6 +39,7 @@ public class Rifle : MonoBehaviour
         AudioSource = gameObject.AddComponent<AudioSource>();
         _aimController = GetComponentInParent<AimController>();
         _impulseSource = GetComponent<CinemachineImpulseSource>();
+        _animator = GetComponentInParent<Animator>();
     }
 
 
@@ -113,6 +115,10 @@ public class Rifle : MonoBehaviour
         }
 
         isReloading = true;
+
+        if (_animator != null)
+            _animator.SetBool("isReloading", true);
+
         Debug.Log("재장전 중");
 
         if (ReloadSound != null)
@@ -122,6 +128,10 @@ public class Rifle : MonoBehaviour
 
         CurrentAmmo = MagazineSize;
         isReloading = false;
+
+        if (_animator != null)
+            _animator.SetBool("isReloading", false);
+
         Debug.Log("재장전 끝");
     }
 

@@ -4,13 +4,11 @@
 TagManager:
   serializedVersion: 3
   tags:
-<<<<<<< HEAD
-  - Wall
-  - Enemy
-=======
   - Head
   - Body
->>>>>>> KimSungHwan
+  - Enemy
+  - Wall
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -20,13 +18,8 @@ TagManager:
   - UI
   - Enemy
   - Bullet
-<<<<<<< HEAD
-  - Player
-  - Wall
-=======
   - 
   - 
->>>>>>> KimSungHwan
   - 
   - 
   - 
