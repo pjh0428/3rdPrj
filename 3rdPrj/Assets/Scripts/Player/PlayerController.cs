@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        StartCoroutine(EnableInputAfterDelay(0.2f));
+        StartCoroutine(EnableInputAfterDelay(0.3f));
     }
 
     void Update()
