@@ -1,106 +1,131 @@
-using System.Collections;
+ï»¿using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Audio;
 
 public class Rifle : MonoBehaviour
 {
-    [Header("ÃÑ±âÁ¤º¸")]
-    //[SerializeField] private float Damage = 10f; // ÃÑ¾Ë ÇÇÇØ·®
-    [SerializeField] private float FireRate = 0.2f; // ¹ß»ç °£°İ
-    [SerializeField] int MagazineSize = 30; // ÅºÃ¢ Å©±â
-    [SerializeField] private float ReloadTime = 2.0f; // ÀçÀåÀü ½Ã°£
+    [Header("ì´ê¸°ì •ë³´")]
+    [SerializeField] private float FireRate = 0.1f; // ë°œì‚¬ì†ë„
+    [SerializeField] int MagazineSize = 1000; // ì¥íƒ„ìˆ˜
+    [SerializeField] private float ReloadTime = 2.0f; // ì¬ì¥ì „ ì‹œê°„
 
-    [Header("¹ß»ç°ü·ÃÁ¤º¸")]
-    public Transform FirePoint; // ÃÑ±¸
-    public GameObject FireFlash; // ÃÑ±¸ ¼¶±¤
-    public AudioClip ShootSound; // ¹ß»ç »ç¿îµå
-    public AudioClip ReloadSound; // ÀçÀåÀü »ç¿îµå
+    [Header("ë°œì‚¬ê´€ë ¨ì •ë³´")]
+    public Transform FirePoint; // ì´êµ¬
+    public GameObject FireFlash; // ì´ê¸°í™”ì—¼
 
-    public int CurrentAmmo; // ÇöÀç Åº¾à
-    private bool isReloading = false; // ÀçÀåÀü ¿©ºÎ
-    private float NextFireTime = 0f; // ´ÙÀ½ ¹ß»ç °¡´É ½Ã°£
-    private AudioSource AudioSource; 
+    [Header("ì´ì•Œê´€ë ¨ì •ë³´")]
+    public GameObject BulletPrefab; // ì´ì•Œí”„ë¦¬íŒ¹
+    public float BulletSpeed = 50f; // ì´ì•Œì†ë„
+
+    [Header("ì‚¬ìš´ë“œê´€ë ¨")]
+    public AudioClip ShootSound; // ë°œì‚¬ì†Œë¦¬
+    public AudioClip ReloadSound; // ì¬ì¥ì „ì†Œë¦¬
 
 
+    [SerializeField] private int CurrentAmmo; // í˜„ì¬ ì¥íƒ„ìˆ˜
+    private bool isReloading = false; // ì¬ì¥ì „ ì—¬ë¶€
+    private float NextFireTime = 0.1f; // ë‹¤ìŒ ë°œì‚¬ ì‹œê°„
+    private AudioSource AudioSource;
+
+    private AimController _aimController;
+    private CinemachineImpulseSource _impulseSource;
 
 
     void Start()
     {
-        CurrentAmmo = MagazineSize; // ÇöÀç Åº¾à ÃÊ±âÈ­
+        CurrentAmmo = MagazineSize; // ì¥íƒ„ìˆ˜ ì´ˆê¸°í™”
         AudioSource = gameObject.AddComponent<AudioSource>();
+        _aimController = GetComponentInParent<AimController>();
+        _impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
-   
+
     void Update()
     {
-        // ÀçÀåÀü ÁßÀÌ ¾Æ´Ò ¶§¸¸ ¹ß»ç
+        // ì¬ì¥ì „ ì¤‘ ì•„ë‹ˆë©´ ë°œì‚¬ ê°€ëŠ¥
         if (isReloading)
             return;
 
-        // ¹ß»çÇÔ¼ö - ¸¶¿ì½º ÁÂÅ¬¸¯
+        // ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­ ë°œì‚¬
         if (Input.GetMouseButton(0) && Time.time >= NextFireTime)
         {
-            NextFireTime = Time.time + FireRate; // ½Ã°£°»½Å
+            NextFireTime = Time.time + FireRate;
             Fire();
-            Debug.Log("¹ß»ç, ÇöÀç Åº¾à: " + CurrentAmmo);
+            Debug.Log("ì”ì—¬ ì¥íƒ„ìˆ˜: " + CurrentAmmo);
         }
 
-        // ÀçÀåÀü(R)
+        // ì¬ì¥ì „ = R
         if (Input.GetKeyDown(KeyCode.R))
         {
-            // ÀçÀåÀü ÄÚ·çÆ¾
             StartCoroutine(Reload());
         }
-
-        void Fire()
-        {
-            if (CurrentAmmo <= 0)
-            {
-                // ÃÑ¾ËÀÌ ¾øÀ¸¸é ÀçÀåÀü ½Ãµµ
-                StartCoroutine(Reload());
-                return;
-            }
-
-            CurrentAmmo--;
-
-            // ÃÑ±¸ ¼¶±¤ ÀÌÆåÆ® »ı¼º
-            if (FireFlash != null)
-                Instantiate(FireFlash, FirePoint.position, FirePoint.rotation);
-
-            // ¹ß»ç »ç¿îµå Àç»ı
-            if (ShootSound != null)
-                AudioSource.PlayOneShot(ShootSound);
-
-            // ¹ß»ç ·ÎÁ÷ Ãß°¡ÇÊ¿ä
-        }
-
-        IEnumerator Reload()
-        {
-            // ÀçÀåÀü ÁßÀÌ°Å³ª, ÅºÃ¢ÀÌ °¡µæ Â÷ ÀÖÀ¸¸é ÀçÀåÀüÇÏÁö ¾ÊÀ½
-            if (isReloading || CurrentAmmo == MagazineSize)
-            {
-                yield break; // ÄÚ·çÆ¾ Áï½Ã Á¾·á
-            }
-
-            isReloading = true;
-            Debug.Log("ÀçÀåÀü ½ÃÀÛ");
-
-            // ÀçÀåÀü »ç¿îµå Àç»ı
-            if (ReloadSound != null)
-                AudioSource.PlayOneShot(ReloadSound);
-
-            // ÀçÀåÀü ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇàÇÔ¼ö ÇÊ¿ä
-
-            // ÀçÀåÀü ½Ã°£¸¸Å­ ´ë±â
-            yield return new WaitForSeconds(ReloadTime);
-
-            // ÃÑ¾Ë Ã¤¿ì±â
-            CurrentAmmo = MagazineSize;
-            isReloading = false;
-            Debug.Log("ÀçÀåÀü ¿Ï·á");
-        }
-
-
-
     }
+
+    void Fire()
+    {
+        if (CurrentAmmo <= 0)
+        {
+            // ì¥íƒ„ì´ 0ì´ë©´ ìë™ ì¬ì¥ì „
+            StartCoroutine(Reload());
+            return;
+        }
+
+        CurrentAmmo--;
+
+        // ì´ê¸°í™”ì—¼ í‘œì‹œ
+        if (FireFlash != null)
+        {
+            GameObject flash =Instantiate(FireFlash, FirePoint.position, FirePoint.rotation);
+            Destroy(flash, 0.1f);
+        }
+
+        // ë°œì‚¬ì†Œë¦¬ ì¶œë ¥
+        if (ShootSound != null)
+            AudioSource.PlayOneShot(ShootSound);
+
+        if (_impulseSource != null)
+        {
+            _impulseSource.GenerateImpulse();
+        }
+
+        if (BulletPrefab != null)
+        {         
+            Vector3 direction = (_aimController.AimPoint - FirePoint.position).normalized;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+
+            GameObject bullet = Instantiate(BulletPrefab, FirePoint.position, rotation);
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.linearVelocity = direction * BulletSpeed;
+            }
+        }
+    }
+
+    IEnumerator Reload()
+    {
+        // ì¥íƒ„ì´ ë‹¤ ì°¨ìˆìœ¼ë©´ ì¬ì¥ì „x
+        if (isReloading || CurrentAmmo == MagazineSize)
+        {
+            yield break;
+        }
+
+        isReloading = true;
+        Debug.Log("ì¬ì¥ì „ ì¤‘");
+
+        if (ReloadSound != null)
+            AudioSource.PlayOneShot(ReloadSound);
+
+        yield return new WaitForSeconds(ReloadTime);
+
+        CurrentAmmo = MagazineSize;
+        isReloading = false;
+        Debug.Log("ì¬ì¥ì „ ë");
+    }
+
 }
+
+    
+

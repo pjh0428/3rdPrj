@@ -5,11 +5,13 @@ public class Player : MonoBehaviour
 
     [Header("기본 스탯")]
     [SerializeField] private float MaxHP = 100f;
-    [SerializeField] private float CurrentHP = 100f;
+    [SerializeField] public float CurrentHP = 100f;
 
+    private Animator animator;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         CurrentHP = MaxHP;
     }
 
@@ -20,15 +22,14 @@ public class Player : MonoBehaviour
         if (CurrentHP <= 0)
         {
             CurrentHP = 0;
-            //Die();
+            Die();
         }
     }
 
     public void Die()
     {
         Debug.Log("플레이어 사망");
-        // 애니메이션 추가
-      
+        animator.SetTrigger("Dying");
     }
 
 }
