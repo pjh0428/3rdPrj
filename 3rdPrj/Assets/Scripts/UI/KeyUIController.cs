@@ -19,6 +19,17 @@ public class KeyUIController : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        // ① 시작할 때 비활성화
+        keyUIPanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// 외부에서 호출해서 키 UI를 켭니다.
+    /// </summary>
+    public void ShowKeyUI()
+    {
+        keyUIPanel.SetActive(true);
     }
 
     private void Start()
@@ -63,4 +74,9 @@ public class KeyUIController : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(
             keyUIPanel.GetComponent<RectTransform>());
     }
+
+    // 획득한 키 개수
+    public int CollectedKeys => collectedKeys;
+    // 총 키 개수
+    public int TotalKeys => totalKeys;
 }
