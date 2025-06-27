@@ -4,11 +4,11 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Wall
-  - Enemy
   - Head
   - Body
-  - Key
+  - Enemy
+  - Wall
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -18,9 +18,7 @@ TagManager:
   - UI
   - Enemy
   - Bullet
-  - Player
-  - Wall
-  - Ground
+  - 
   - 
   - 
   - 
