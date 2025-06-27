@@ -2,14 +2,12 @@
 
 public class Bullet : MonoBehaviour
 {
-    public int damaged = 1;  // 공격력
+    public float damage = 20f;  // 공격력
     public float lifeTime = 3f; // 유지시간
 
     public GameObject bulletHolePrefab;
 
     private Rigidbody rb;
-
-    
 
     void Start()
     {
@@ -29,6 +27,16 @@ public class Bullet : MonoBehaviour
             // 총알 자국 생성 함수 호출
             CreateBulletHole(hit);
 
+            // 피격 처리: 부딪힌 대상이 'Enemy' 태그를 가지고 있다면 피해를 줌 (예시)
+            // if (hit.collider.CompareTag("Enemy"))
+            // {
+            //     var enemyHealth = hit.collider.GetComponent<EnemyHealth>();
+            //     if (enemyHealth != null)
+            //     {
+            //         enemyHealth.TakeDamage(damage);
+            //     }
+            // }
+            
             Destroy(gameObject);
         }
     }
