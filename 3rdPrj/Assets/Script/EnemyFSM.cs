@@ -35,7 +35,7 @@ public class EnemyFSM : MonoBehaviour
     public int hp = 5;
 
     //발사 무기 공격력
-    Bullet bullet;
+    
 
 
     //공격범위
@@ -210,7 +210,7 @@ public class EnemyFSM : MonoBehaviour
     {
         //공격 애니메이션 시작시 이속 0
         moveSpeed = 0;
-        //player.GetComponent<PlayerMove>().DamageAction(attackPower);
+        player.GetComponent<Player>().TakeDamage(attackPower);
 
         zombieAgent.isStopped = true;
         zombieAgent.ResetPath();
