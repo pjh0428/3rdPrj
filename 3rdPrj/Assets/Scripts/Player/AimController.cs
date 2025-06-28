@@ -6,6 +6,8 @@ public class AimController : MonoBehaviour
     public LayerMask aimLayerMask;
     public float defaultDistance = 100f;
 
+    public Transform aimTargetTransform;
+
     public Vector3 AimPoint { get; private set; }
 
     private Transform _cameraTransform;
@@ -32,6 +34,8 @@ public class AimController : MonoBehaviour
             AimPoint = rayOrigin + rayDirection * defaultDistance;
         }
 
+        if (aimTargetTransform != null)
+            aimTargetTransform.position = AimPoint;
 
     }
 
