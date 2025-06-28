@@ -343,7 +343,7 @@ MonoBehaviour:
   messageText: {fileID: 665139536}
   fadeDuration: 0.5
   typeDelay: 0.05
-  nextSceneName: Scene 1
+  nextSceneName: JWY
   fadeController: {fileID: 381266943}
 --- !u!1 &665139534
 GameObject:
@@ -700,7 +700,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: a2c30bba41158b844b2e6e0f41a15d28, type: 3}
   m_Resource: {fileID: 8300000, guid: a2c30bba41158b844b2e6e0f41a15d28, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 1
   Mute: 0
