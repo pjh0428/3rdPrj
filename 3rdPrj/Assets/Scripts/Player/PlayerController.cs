@@ -6,7 +6,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 5.0f;
+    public float moveSpeed = 4.0f;
     public float gravity = -20.0f;
 
     [Header("Mouse Look Settings")]
@@ -15,9 +15,9 @@ public class PlayerController : MonoBehaviour
     [Tooltip("카메라의 상하 회전을 담당할 앵커 오브젝트 (FP_Camera_Anchor)")]
     public Transform cameraAnchor;
     [Tooltip("카메라 상하 시야각 제한 (아래)")]
-    public float verticalLookMin = -80.0f;
+    public float verticalLookMin = -40.0f;
     [Tooltip("카메라 상하 시야각 제한 (위)")]
-    public float verticalLookMax = 80.0f;
+    public float verticalLookMax = 40.0f;
 
     [Header("Animator Parameters")]
     public float animationDampTime = 0.1f;
