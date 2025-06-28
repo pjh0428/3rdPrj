@@ -7,7 +7,7 @@ public class Rifle : MonoBehaviour
 {
     [Header("총기정보")]
     [SerializeField] private float FireRate = 0.1f; // 발사속도
-    [SerializeField] int MagazineSize = 1000; // 장탄수
+    [SerializeField] int MagazineSize = 30; // 장탄수
     [SerializeField] private float ReloadTime = 2.0f; // 재장전 시간
 
     [Header("발사관련정보")]
