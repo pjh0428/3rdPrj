@@ -219,6 +219,7 @@ MonoBehaviour:
   messageText: {fileID: 665139536}
   fadeDuration: 0.5
   typeDelay: 0.05
+  endFadeDuration: 2
   nextSceneName: MainScene
 --- !u!1 &665139534
 GameObject:
@@ -352,7 +353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadePanel: {fileID: 676539304}
-  duration: 1
+  defaultDuration: 1
 --- !u!114 &676539304
 MonoBehaviour:
   m_ObjectHideFlags: 0
