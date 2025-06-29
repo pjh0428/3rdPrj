@@ -27,10 +27,11 @@ public class Player : MonoBehaviour
 
     public void PlayFootstepSound()
     {
-        if (audioSource == null || (footsteps.Length == 0) || audioSource == null)
-            return;
         AudioClip clip = footsteps[footstepIndex];
 
+        if (audioSource == null || (footsteps.Length == 0))         
+            return;
+     
         if(clip != null)
             audioSource.PlayOneShot(clip);
         footstepIndex++;
