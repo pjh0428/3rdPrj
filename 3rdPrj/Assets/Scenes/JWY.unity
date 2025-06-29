@@ -1489,15 +1489,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 237794352771554897, guid: 90267c5798ae41a45978e7ada781bf50, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -24.06
       objectReference: {fileID: 0}
     - target: {fileID: 237794352771554897, guid: 90267c5798ae41a45978e7ada781bf50, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.9
+      value: 1.9319354
       objectReference: {fileID: 0}
     - target: {fileID: 237794352771554897, guid: 90267c5798ae41a45978e7ada781bf50, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2
+      value: -30.987
       objectReference: {fileID: 0}
     - target: {fileID: 237794352771554897, guid: 90267c5798ae41a45978e7ada781bf50, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3604,6 +3604,10 @@ PrefabInstance:
     - {fileID: 8604587867905263972, guid: beef3bcde1610f04aa96275436147bb9, type: 3}
     - {fileID: 8605086538084875422, guid: beef3bcde1610f04aa96275436147bb9, type: 3}
     - {fileID: 8604860698336015012, guid: beef3bcde1610f04aa96275436147bb9, type: 3}
+    - {fileID: 8604723204727784050, guid: beef3bcde1610f04aa96275436147bb9, type: 3}
+    - {fileID: 8604365320452928840, guid: beef3bcde1610f04aa96275436147bb9, type: 3}
+    - {fileID: 8605040193556079814, guid: beef3bcde1610f04aa96275436147bb9, type: 3}
+    - {fileID: 8604975208023371010, guid: beef3bcde1610f04aa96275436147bb9, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8604367122496853544, guid: beef3bcde1610f04aa96275436147bb9, type: 3}

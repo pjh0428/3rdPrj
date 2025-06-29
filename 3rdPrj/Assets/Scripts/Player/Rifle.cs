@@ -54,7 +54,6 @@ public class Rifle : MonoBehaviour
         {
             NextFireTime = Time.time + FireRate;
             Fire();
-            Debug.Log("잔여 장탄수: " + CurrentAmmo);
         }
 
         // 재장전 = R
@@ -119,7 +118,6 @@ public class Rifle : MonoBehaviour
         if (_animator != null)
             _animator.SetBool("isReloading", true);
 
-        Debug.Log("재장전 중");
 
         if (ReloadSound != null)
             AudioSource.PlayOneShot(ReloadSound);
@@ -131,8 +129,6 @@ public class Rifle : MonoBehaviour
 
         if (_animator != null)
             _animator.SetBool("isReloading", false);
-
-        Debug.Log("재장전 끝");
     }
 
 }
