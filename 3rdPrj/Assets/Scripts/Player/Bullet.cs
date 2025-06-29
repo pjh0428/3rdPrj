@@ -53,7 +53,7 @@ public class Bullet : MonoBehaviour
             bulletHole.transform.SetParent(hit.collider.transform);
 
             // 생성된 총알 자국이 10초 뒤에 자동으로 사라지게 만듦
-            Destroy(bulletHole, 10f);
+            Destroy(bulletHole, 5f);
         }
     }
 
