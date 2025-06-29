@@ -273,7 +273,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 445690429}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -2089,7 +2089,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -550, y: -250}
-  m_SizeDelta: {x: 250, y: 250}
+  m_SizeDelta: {x: 400, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1987828050
 MonoBehaviour:
@@ -2248,7 +2248,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<color=#00FF28>\uD300\uC6D0</color>\n\n\uC880\uBE44\n"
+  m_text: "<color=#00FF28>\uD300\uC6D0</color>\n\n\uC880\uBE44 \uAD6C\uD604\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cdeb26625aa1cd04dac282888c596a99, type: 2}
   m_sharedMaterial: {fileID: -3820330478879016569, guid: cdeb26625aa1cd04dac282888c596a99, type: 2}
