@@ -322,10 +322,10 @@ public class EnemyFSM : MonoBehaviour
     IEnumerator DamageProcess()
     {
         //피격 모션 시간만큼 기다림
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
 
         //현재 상태를 이동상태로 전환
-
+        anim.SetTrigger("DamagedToMove");
         m_State = EnemyState.Move;
         Debug.Log("상태 전환: damaged -> move");
     }
