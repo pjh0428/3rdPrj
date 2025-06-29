@@ -9,7 +9,15 @@ public class HighlightRing : MonoBehaviour
     [SerializeField] private float lineWidth = 0.05f;
     [SerializeField] private Color color = Color.yellow;
 
+    [Header("Pulse Colors (RGBA 0~255)")]
+    [SerializeField] private Color32 startColor = new Color32(225, 225, 0, 225);
+    [SerializeField] private Color32 endColor = new Color32(255, 255, 0, 35);
+
+    [Header("Pulse Settings")]
+    [SerializeField, Min(0f)] private float pulseSpeed = 2f;  // 속도
+
     private LineRenderer lr;
+    private Color32[] colors;
 
     private void Awake()
     {
@@ -18,39 +26,39 @@ public class HighlightRing : MonoBehaviour
 
         // 머티리얼 & 컬러 설정 (Unlit/Color 계열)
         lr.material = new Material(Shader.Find("Sprites/Default"));
-        lr.startColor = lr.endColor = color;
         lr.startWidth = lr.endWidth = lineWidth;
         lr.loop = true;
-        lr.useWorldSpace = false;  // 이 오브젝트 로컬 좌표로 그리기
-
+        lr.useWorldSpace = false;
         BuildRing();
+    }
+
+    private void Update()
+    {
+        // t: 0↔1을 펄스 속도로 왕복
+        float t = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
+        Color32 c = Color32.Lerp(startColor, endColor, t);
+        lr.startColor = lr.endColor = c;
     }
 
     private void BuildRing()
     {
         lr.positionCount = segments;
-        float deltaAngle = 360f / segments;
+        float delta = 2 * Mathf.PI / segments;
         for (int i = 0; i < segments; i++)
         {
-            float ang = Mathf.Deg2Rad * (i * deltaAngle);
-            // XZ 평면(지면)에 그린다고 가정. 1인 radius 만큼 떨어진 지점.
+            float ang = i * delta;
             float x = Mathf.Cos(ang) * radius;
             float z = Mathf.Sin(ang) * radius;
             lr.SetPosition(i, new Vector3(x, 0f, z));
         }
     }
 
-    // Inspector에서 radius, color 등을 바꾸면 즉시 반영되길 원하면 아래를 추가:
-#if UNITY_EDITOR
+    #if UNITY_EDITOR
     private void OnValidate()
     {
-        if (lr == null) lr = GetComponent<LineRenderer>();
-        if (lr != null)
-        {
-            lr.startColor = lr.endColor = color;
-            lr.startWidth = lr.endWidth = lineWidth;
-            BuildRing();
-        }
+        if (!lr) lr = GetComponent<LineRenderer>();
+        lr.startWidth = lr.endWidth = lineWidth;
+        BuildRing();
     }
-#endif
+    #endif
 }

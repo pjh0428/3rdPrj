@@ -5,18 +5,21 @@ public class TutorialTrigger : MonoBehaviour
     [TextArea(3, 8)]
     [SerializeField] private string message;
 
+
+    [Header("Key UI")]
+    [SerializeField] private bool showKeyAfterClose = false;  // TTBook2에만 체크
+
     private bool hasTriggered = false;
 
     private void OnTriggerEnter(Collider other)
     {
         if (hasTriggered || !other.CompareTag("Player")) return;
 
-        bool shown = UIManager.Instance.ShowNotification(message);
-        if (shown)
-        {
-            Debug.Log("[TutorialTrigger] 메시지 띄움 성공");
-            hasTriggered = true;
-        }
+        // showKeyUI 가 켜진 경우에만 KeyUIPanel 켜기
+        UIManager.Instance.ShowNotification(message, showKeyAfterClose);
+
+        hasTriggered = true;
+
     }
 
     private void OnTriggerExit(Collider other)

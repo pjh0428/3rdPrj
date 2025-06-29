@@ -17,6 +17,12 @@ public class HealthBarUI : MonoBehaviour
     [Tooltip("fillAmount가 목표치에 도달할 때까지 부드럽게 보정할 속도")]
     [SerializeField, Min(0f)] private float smoothSpeed = 5f;
 
+    [Header("Damage Overlay")]
+    [SerializeField] private Image bloodOverlay;      // 추가: BloodOverlay Image
+    [SerializeField, Range(0f, 1f)] private float overlayAlpha = 1f; // 최대 알파
+    [SerializeField, Range(0f, 1f)] private float minOverlayAlpha = 0.2f;  // 60% HP일 때 시작 알파
+
+
     private float maxHP;
     private float targetRatio;
 
@@ -48,8 +54,30 @@ public class HealthBarUI : MonoBehaviour
 
         // 비율에 따라 색상 변경 (보정된 비율로 해도 좋고 targetRatio로 해도 상관없음)
         float current = fillImage.fillAmount;
-        if (current > 0.6f) fillImage.color = highColor;
-        else if (current > 0.2f) fillImage.color = midColor;
+        if (current > 0.61f) fillImage.color = highColor;
+        else if (current > 0.21f) fillImage.color = midColor;
         else fillImage.color = lowColor;
+
+        // 피 오버레이 처리 (하나의 블록으로)
+        if (ratio <= 0.6f)
+        {
+            // 60% 이하 구간을 0~1로 정규화 (ratio=0.6→0, ratio=0→1)
+            float norm = Mathf.InverseLerp(0.6f, 0f, ratio);
+
+            // 정규화 값에 overlayAlpha를 곱해서 기본 알파 계산
+            float baseAlpha = Mathf.Lerp(minOverlayAlpha, overlayAlpha, norm);
+
+            // 펄스 주기
+            float pulse = (Mathf.Sin(Time.time * 5f) + 1f) * 0.5f;
+
+            // 최종 알파
+            float a = baseAlpha * pulse;
+            bloodOverlay.color = new Color(1f, 1f, 1f, a);
+        }
+        else
+        {
+            bloodOverlay.color = Color.clear;
+        }
     }
+
 }
