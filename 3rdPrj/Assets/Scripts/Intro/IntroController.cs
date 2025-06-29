@@ -22,6 +22,9 @@ public class IntroController : MonoBehaviour
     [Header("타자기 효과 속도")]
     [SerializeField, Min(0f)] private float typeDelay = 0.05f;
 
+    [Header("씬 전환 페이드 시간")]
+    [SerializeField, Min(0.1f)] private float endFadeDuration = 1.5f;
+
     [SerializeField] private string nextSceneName = "LobbyScene";
 
     private int index = 0;
@@ -63,7 +66,11 @@ public class IntroController : MonoBehaviour
                 if (index < messages.Count - 1)
                     StartCoroutine(ShowNext());
                 else
-                    SceneManager.LoadScene(nextSceneName);
+                    // 마지막 메시지 후 페이드아웃 → 씬 로드
+                    ScreenFader.Instance.FadeOut(
+                        onComplete: () => SceneManager.LoadScene(nextSceneName),
+                        customDuration: endFadeDuration
+                    );
             }
         }
     }
