@@ -34,8 +34,7 @@ public class EnemyFSM : MonoBehaviour
     //에너미 체력
     public int hp = 5;
 
-    //발사 무기 공격력
-    Bullet bullet;
+  
 
 
     //공격범위
@@ -317,12 +316,13 @@ public class EnemyFSM : MonoBehaviour
     {
         //진행중인 피격 코루틴 중지
         StopCoroutine("DamageProcess");
+        Destroy(gameObject, 2.5f); // 2.5초 후 시체 사라짐
     }
 
     IEnumerator DamageProcess()
     {
         //피격 모션 시간만큼 기다림
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.1f);
 
         //현재 상태를 이동상태로 전환
 
