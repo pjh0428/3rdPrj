@@ -113,7 +113,7 @@ public class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, player.position) < findDistance)
         {
             m_State = EnemyState.Move;
-            Debug.Log("상태 전환: idle->move");
+
 
             //이동 애니메이션으로 전환
             anim.SetTrigger("IdleToMove");
@@ -125,52 +125,25 @@ public class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, originPos) > moveDisatnce)
         {
             m_State = EnemyState.Return;
-            Debug.Log("상태 전환: move->return");
+
+            anim.SetTrigger("MoveToIdle"); // 필요하면 복귀 애니메이션 트리거 추가
+            return;
         }
 
-        //플레이어 거리가 공격범위 밖이면 플레이어를 향해 이동
-        else if (Vector3.Distance(transform.position, player.position) > attackDistance)
+        if (Vector3.Distance(transform.position, player.position) <= attackDistance)
         {
-            //이동 방향 설정
-            // Vector3 dir = (player.position - transform.position).normalized;
-
-            // //캐릭터 콘트롤러를 이용해 이동하기
-            // cc.Move(dir * moveSpeed * Time.deltaTime);
-
-            // //플레이어를 향해 방향 전환
-            // transform.forward = dir;
-
-
-            //내비게이션 에이전트의 이동을멈추고 경로 초기화
-            zombieAgent.isStopped = true;
-            zombieAgent.ResetPath();
-
-            //네비게이션으로 접근하는 최소 거리를 공격거리 기능 거리로 설정
-            zombieAgent.stoppingDistance = attackDistance;
-
-            //네이게이션의 목적지를 플레이어의 위치로 설정
-            zombieAgent.SetDestination(player.position);
-        }
-
-
-
-        //그렇지 않다면, 현재 상태를 공격(attack)으로 전환
-        else
-        {
-
-
             m_State = EnemyState.Attack;
-            Debug.Log("상태 전환: move->attack");
-
-            //누적 시간을 공격 딜레이 시간만큼 미리 진행시켜 놓는다
-            currentTime = attackDelay;
-
+ 
+            currentTime = attackDelay; // 공격 딜레이 초기화
             zombieAgent.isStopped = true;
-
-
-            //공격 대기 애니메이션 플레이
-            anim.SetTrigger("MoveToAttackDelay");
+            anim.SetTrigger("MoveToAttackDelay"); // 대기 or 공격 준비 애니메이션
+            return;
         }
+
+        // 그 외에는 계속 플레이어 추적
+        zombieAgent.isStopped = false;
+        zombieAgent.stoppingDistance = attackDistance;
+        zombieAgent.SetDestination(player.position);
     }
 
 
@@ -221,7 +194,7 @@ public class EnemyFSM : MonoBehaviour
         moveSpeed = basicmoveSpeed;
         //현재 상태를 대기 상태로 전환
         m_State = EnemyState.Idle;
-        Debug.Log("상태 전환: attack -> idle");
+ 
 
         //대기 애니메이션으로 전환하는 트랜지션 호출
         anim.SetTrigger("AttackToIdle");
@@ -258,7 +231,7 @@ public class EnemyFSM : MonoBehaviour
             transform.rotation = originRot;
 
             m_State = EnemyState.Idle;
-            Debug.Log("상태전환: Retrun -> Idle");
+          
 
             //대기 애니메이션으로 전환하는 트랜지션 호출
             anim.SetTrigger("MoveToIdle");
@@ -268,12 +241,9 @@ public class EnemyFSM : MonoBehaviour
     public void HitEnemy(int hitPower)
     {
         //만일 이미 피격 상태이거나 상망 상태 또는 복귀 상태라면 아무런 처리하지 않고 함수 종료
-        if (m_State == EnemyState.Damaged ||
-           m_State == EnemyState.Die ||
-           m_State == EnemyState.Return)
-        {
+        if (m_State == EnemyState.Die )
             return;
-        }
+        
 
         //플레이어 공격력 만큼 에네미 체력 감소
         hp -= hitPower;
@@ -287,7 +257,7 @@ public class EnemyFSM : MonoBehaviour
         if (hp > 0)
         {
             m_State = EnemyState.Damaged;
-            Debug.Log("상태 전환: any -> damaged");
+
 
             //피격 애니메이션
             anim.SetTrigger("Damaged");
@@ -299,7 +269,7 @@ public class EnemyFSM : MonoBehaviour
 
 
             m_State = EnemyState.Die;
-            Debug.Log("상태전환: Any State->Die");
+            
 
             //죽음 애니메이션
             anim.SetTrigger("Die");
@@ -327,15 +297,8 @@ public class EnemyFSM : MonoBehaviour
         //현재 상태를 이동상태로 전환
         anim.SetTrigger("DamagedToMove");
         m_State = EnemyState.Move;
-        Debug.Log("상태 전환: damaged -> move");
+   
     }
 
-    IEnumerator DieProcess()
-    {
-        cc.enabled = false;
-
-        yield return new WaitForSeconds(1.0f);
-
-        Destroy(gameObject);
-    }
+  
 }

@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController _characterController;
     private AimController _aimController;
     private Animator _animator;
+    private Player _player;
     private Vector3 _playerVelocity;
     private float _cameraPitch = 0.0f; // 카메라의 상하 회전 각도 저장
 
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _aimController = GetComponent<AimController>();
+        _player = GetComponent<Player>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -45,6 +47,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (_player != null && _player.isDead)
+            return;
+
         if (!_isInputEnabled) return;
 
         HandleMouseLook();

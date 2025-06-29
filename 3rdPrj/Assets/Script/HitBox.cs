@@ -18,10 +18,6 @@ public class HitBox : MonoBehaviour
     {
         if (other.gameObject.layer == bulletLayer)
         {
-
-            
-
-
             if (other.CompareTag("Head"))
                 demageMultiplier = 5;
             if (other.CompareTag("Body"))
