@@ -24,23 +24,25 @@ public class IntroController : MonoBehaviour
 
     [SerializeField] private string nextSceneName = "LobbyScene";
 
-    [SerializeField] private FadePanelsController fadeController;
-
     private int index = 0;
     private bool isTyping = false;
     private Coroutine typeCoroutine;
 
     private void Start()
     {
-        // 씬 시작 직후에 언페이드 효과
-        fadeController.StartUnfade();
-
-        // 첫 메시지와 그림 세팅
+        // 씬 로드시 검정으로 덮여 있는 상태에서
+        ScreenFader.Instance.FadeIn(() =>
+        {
+            // FadeIn 끝난 뒤에만 아래 인트로 로직 실행
+            BeginIntroSequence();
+        });
+    }
+    private void BeginIntroSequence()
+    {
+        // 기존 Start() 내용 (메시지 초기화/타이핑 등)을 이곳으로 옮기세요.
         messageText.text = "";
         pictureImage.sprite = pictures[index];
         SetImageAlpha(1f);
-
-        // 첫 메시지 타이핑 시작
         typeCoroutine = StartCoroutine(TypeText(messages[index]));
     }
 
