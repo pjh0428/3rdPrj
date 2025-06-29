@@ -1,47 +1,70 @@
 using System;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class BulletUI : MonoBehaviour
 {
     [Header("Rifle 스크립트가 붙은 오브젝트")]
-    [SerializeField] private MonoBehaviour rifleComponent;  // Rifle이 붙은 컴포넌트 (인스펙터에 드래그)  
+    [SerializeField] private MonoBehaviour rifleComponent;
 
-    [Header("UI Text")]
-    [SerializeField] private Text ammoText;                // 표시할 Text 컴포넌트  
+    [Header("UI Text (TextMeshPro)")]
+    [SerializeField] private TMP_Text ammoText;   // ← 변경: Text → TMP_Text
 
-    // 리플렉션용 필드 인포  
     private FieldInfo fiCurrent;
     private FieldInfo fiMagazine;
 
     private void Awake()
     {
+        // 1) 리플렉션 필드 세팅
         if (rifleComponent == null)
         {
-            // UnityEngine.Object를 명시적으로 사용하여 모호성 제거  
-            rifleComponent = UnityEngine.Object.FindFirstObjectByType(Type.GetType("Rifle")) as MonoBehaviour;
+            rifleComponent =
+              UnityEngine.Object.FindFirstObjectByType(Type.GetType("Rifle"))
+              as MonoBehaviour;
         }
 
-        // Rifle 타입 가져오기  
         var rifleType = rifleComponent.GetType();
-
-        // private int CurrentAmmo 필드  
         fiCurrent = rifleType.GetField("CurrentAmmo",
             BindingFlags.Instance | BindingFlags.NonPublic);
-        // private int MagazineSize 필드  
         fiMagazine = rifleType.GetField("MagazineSize",
             BindingFlags.Instance | BindingFlags.NonPublic);
 
         if (fiCurrent == null || fiMagazine == null)
             Debug.LogError("Rifle 스크립트에서 private 필드를 찾지 못했습니다.");
+
+        // 2) TextMeshPro 스타일 초기화
+        if (ammoText != null)
+        {
+            // 기본 텍스트 색상: #D8D8D8
+            ammoText.color = new Color32(0xD8, 0xD8, 0xD8, 0xFF);
+
+            // Outline 설정: 색상 #2A0000, 두께 0.2
+            ammoText.fontMaterial.SetColor(
+                ShaderUtilities.ID_OutlineColor,
+                new Color32(0x2A, 0x00, 0x00, 0xFF)
+            );
+            ammoText.fontMaterial.SetFloat(
+                ShaderUtilities.ID_OutlineWidth,
+                0.2f
+            );
+
+            // (선택) Underlay 효과: 그림자처럼 붉은색 아래로 약간 퍼지게
+            ammoText.fontMaterial.EnableKeyword("UNDERLAY_ON");
+            ammoText.fontMaterial.SetColor(
+                "_UnderlayColor",
+                new Color32(0x2A, 0x00, 0x00, 0x80)
+            );
+            ammoText.fontMaterial.SetFloat("_UnderlaySoftness", 0.5f);
+            ammoText.fontMaterial.SetFloat("_UnderlayOffsetX", 1f);
+            ammoText.fontMaterial.SetFloat("_UnderlayOffsetY", -1f);
+        }
     }
 
     private void Update()
     {
-        if (fiCurrent == null || fiMagazine == null) return;
+        if (fiCurrent == null || fiMagazine == null || ammoText == null) return;
 
-        // 리플렉션으로 private 필드값 읽기  
         int current = (int)fiCurrent.GetValue(rifleComponent);
         int total = (int)fiMagazine.GetValue(rifleComponent);
 

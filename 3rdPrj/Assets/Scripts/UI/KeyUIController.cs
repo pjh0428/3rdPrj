@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class KeyUIController : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class KeyUIController : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject keyUIPanel; // 투명 패널 오브젝트
     [SerializeField] private Image keyIcon;         // 열쇠 아이콘(UI Image)
-    [SerializeField] private Text countText;        // KeyCountText
+    [SerializeField] private TMP_Text countText;    // TextMeshPro 텍스트
 
     [Header("Settings")]
     [SerializeField] private int totalKeys = 6;     // 총 열쇠 개수
@@ -17,19 +18,29 @@ public class KeyUIController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+            Instance = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        // ① 시작할 때 비활성화
         keyUIPanel.SetActive(false);
-    }
 
-    /// <summary>
-    /// 외부에서 호출해서 키 UI를 켭니다.
-    /// </summary>
-    public void ShowKeyUI()
-    {
-        keyUIPanel.SetActive(true);
+        // 기본 텍스트 스타일 설정: 회색(#D8D8D8), 붉은 테두리(#2A0000)
+        if (countText != null)
+        {
+            countText.color = new Color32(0xD8, 0xD8, 0xD8, 0xFF);
+            countText.fontMaterial.SetColor(
+                ShaderUtilities.ID_OutlineColor,
+                new Color32(0x2A, 0x00, 0x00, 0xFF)
+            );
+            countText.fontMaterial.SetFloat(
+                ShaderUtilities.ID_OutlineWidth,
+                0.2f
+            );
+        }
     }
 
     private void Start()
@@ -37,13 +48,20 @@ public class KeyUIController : MonoBehaviour
         // 초기 UI 세팅
         keyIcon.gameObject.SetActive(true);
         countText.text = $"{collectedKeys} / {totalKeys}";
-        // 강제 레이아웃 갱신
         LayoutRebuilder.ForceRebuildLayoutImmediate(
             keyUIPanel.GetComponent<RectTransform>());
     }
 
     /// <summary>
-    /// 키를 한 개 획득할 때마다 호출
+    /// 키 UI 패널을 활성화
+    /// </summary>
+    public void ShowKeyUI()
+    {
+        keyUIPanel.SetActive(true);
+    }
+
+    /// <summary>
+    /// 키를 획득할 때마다 호출
     /// </summary>
     public void OnKeyCollected()
     {
@@ -57,20 +75,17 @@ public class KeyUIController : MonoBehaviour
         }
         else
         {
-            // 모든 키 수집 완료 상태
+            // 모든 키 수집 완료
             keyIcon.gameObject.SetActive(false);
 
-            // 1) KeyUIPanel의 HorizontalLayoutGroup에 가서 Control Child Size 체크하기
             var hlg = keyUIPanel.GetComponent<HorizontalLayoutGroup>();
             hlg.childControlWidth = true;
             hlg.childControlHeight = true;
 
-            // 텍스트를 안내 문구로 교체하고 우측 정렬
-            countText.alignment = TextAnchor.MiddleRight;
+            countText.alignment = TextAlignmentOptions.Right;
             countText.text = " ※ 중앙 현관으로 가기";
         }
 
-        // 패널 크기를 즉시 다시 계산
         LayoutRebuilder.ForceRebuildLayoutImmediate(
             keyUIPanel.GetComponent<RectTransform>());
     }

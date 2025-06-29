@@ -343,7 +343,7 @@ MonoBehaviour:
   messageText: {fileID: 665139536}
   fadeDuration: 0.5
   typeDelay: 0.05
-  nextSceneName: JWY
+  nextSceneName: MainScene
   fadeController: {fileID: 381266943}
 --- !u!1 &665139534
 GameObject:
