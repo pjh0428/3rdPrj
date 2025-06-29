@@ -21,6 +21,7 @@ public class Player_Hitbox : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             player.TakeDamage(10);
+            UIShake.Instance.Shake(0.2f, 10f);
             StartCoroutine(DisableHitbox());
         }
     }
